@@ -1,3 +1,6 @@
+from click import argument, command
+
+from scrapy import Request
 from scrapy import Spider
 from scrapy.crawler import CrawlerProcess
 
@@ -5,8 +8,6 @@ from scrapy.crawler import CrawlerProcess
 class PugSpider(Spider):
     name = 'pugpe'
     allowed_domains = ['pug.pe']
-
-    start_urls = ['http://pycon.pug.pe/archive/past_events/']
 
     def parse(self, response):
         event = response.xpath('//h2[@id="home"]/text()').get()
@@ -33,7 +34,24 @@ class PugSpider(Spider):
                 yield response.follow(next_url, callback=self.parse)
 
 
-if __name__ == '__main__':
-    process = CrawlerProcess()
-    process.crawl(PugSpider)
+@command()
+@argument('editions', nargs=-1)
+def main(editions):
+    start_urls = []
+    for edition in editions:
+        start_urls.append(f"http://pycon.pug.pe/{edition.upper()}/")
+    if not editions:
+        start_urls.append("http://pycon.pug.pe/archive/past_events/")
+    process = CrawlerProcess(
+        settings={
+            "FEEDS": {
+                "items.csv": {"format": "csv"},
+            },
+        }
+    )
+    process.crawl(PugSpider, start_urls=start_urls)
     process.start()
+
+
+if __name__ == '__main__':
+    main()
