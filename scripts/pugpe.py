@@ -1,3 +1,5 @@
+import os
+import shutil
 from click import argument, command
 
 from scrapy import Request
@@ -45,13 +47,11 @@ class PugSpider(Spider):
 
 
 @command()
-@argument('editions', nargs=-1)
-def main(editions):
+@argument('edition')
+def main(edition):
     start_urls = []
-    for edition in editions:
+    if edition:
         start_urls.append(f"http://pycon.pug.pe/{edition.upper()}/")
-    if not editions:
-        start_urls.append("http://pycon.pug.pe/archive/past_events/")
     process = CrawlerProcess(
         settings={
             "FEEDS": {
@@ -65,4 +65,6 @@ def main(editions):
 
 
 if __name__ == '__main__':
+    if os.path.exists("temp"):
+        shutil.rmtree("temp")
     main()  # pylint: disable=no-value-for-parameter

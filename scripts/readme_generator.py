@@ -40,9 +40,9 @@ def read_json():
     with open('temp/talks.json', 'r') as talks_file:
         return json.load(talks_file)
 
-def write_readme(text, dir_name, event_edition):
+def write_readme(text, year_name, event_edition):
     os.chdir('../')
-    path = f"{dir_name}/{event_edition}"
+    path = f"{year_name}/{event_edition}"
     os.makedirs(path, exist_ok=True)
 
     filename = os.path.join(path, "README.md")
