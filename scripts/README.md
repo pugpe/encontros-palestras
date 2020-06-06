@@ -8,4 +8,5 @@ Este script contém um spider que vai coletar os dados de cada edição do PUG-P
 
 Onde "lxii" é o número da edição do PUG em algarismos romanos. É necessário que seja em algarismos romanos, pois precisa dar match com a URL do evento. Os dados serão armazenados no diretório temp em arquivos json no seguinte formato: talks_{edition}.json
 
-Após coletar os dados, o mesmo script vai gerar um README para cada evento a partir do readme_generator.py
+Após coletar os dados, o mesmo script vai gerar um README para cada evento a partir do readme_generator.py.
+A estrutura de diretórios vai ser: `ano/edição/README.md`.
