@@ -53,7 +53,7 @@ def main(edition):
     )
     process.crawl(PugSpider, start_urls=start_urls)
     process.start()
-    readme_generator.main()
+    readme_generator.main(edition)
 
 
 if __name__ == '__main__':

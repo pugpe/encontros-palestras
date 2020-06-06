@@ -36,8 +36,8 @@ def markdown_generator(event):
     write_readme('\n'.join(file_text), dir_name, event_edition)
 
 
-def read_json():
-    with open('temp/talks.json', 'r') as talks_file:
+def read_json(edition):
+    with open(f'temp/talks_{edition}.json', 'r') as talks_file:
         return json.load(talks_file)
 
 def write_readme(text, year_name, event_edition):
@@ -50,10 +50,7 @@ def write_readme(text, year_name, event_edition):
         readme_file.writelines(text)
 
 
-def main():
-    data = read_json()
+def main(edition):
+    data = read_json(edition)
     for event in data:
         markdown_generator(event)
-
-if __name__ == '__main__':
-    main()
