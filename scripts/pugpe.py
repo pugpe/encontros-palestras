@@ -13,16 +13,10 @@ class PugSpider(Spider):
     allowed_domains = ['pug.pe']
 
     def parse(self, response):
-        if 'archive/past_events/' in response.url:
-            past_urls = response.xpath(
-                '//div[@class="panel"]//a/@href').getall()
-            for next_url in past_urls:
-                yield response.follow(next_url, callback=self.parse)
-
         event = response.xpath('//h2[@id="home"]/text()').get()
         talks = response.xpath('//h2[@id="talks"]/following-sibling::div')
         place = response.xpath(
-            '//h2[@id="local"]/following-sibling::h5').re_first('Local:(.*)')
+            '//h2[@id="local"]/following-sibling::h5').re_first('Local:(.*)</h5>')
         event_time = response.xpath(
             '//h2[@id="local"]/following-sibling::h5').re_first('Horário:(.*)</h5>')
         talks_list = []
@@ -45,17 +39,15 @@ class PugSpider(Spider):
                 'palestras': talks_list,
             }
 
-
 @command()
 @argument('edition')
 def main(edition):
     start_urls = []
-    if edition:
-        start_urls.append(f"http://pycon.pug.pe/{edition.upper()}/")
+    start_urls.append(f"http://pycon.pug.pe/{edition.upper()}/")
     process = CrawlerProcess(
         settings={
             "FEEDS": {
-                "temp/talks.json": {"format": "json"},
+                f"temp/talks_{edition}.json": {"format": "json"},
             },
         }
     )
@@ -65,6 +57,4 @@ def main(edition):
 
 
 if __name__ == '__main__':
-    if os.path.exists("temp"):
-        shutil.rmtree("temp")
     main()  # pylint: disable=no-value-for-parameter
