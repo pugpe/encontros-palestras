@@ -1,7 +1,8 @@
 import os
 import json
-import dateparser
 import re
+
+import dateparser
 
 
 LEVEL1 = "#"
@@ -9,15 +10,16 @@ LEVEL2 = "##"
 LEVEL3 = "###"
 LEVEL4 = "####"
 
+
 def markdown_generator(event):
     file_text = []
     event_date = event["horario"]
     event_place = event["local"]
     event_name = event["evento"]
-    event_title = f"{LEVEL1} {event_name} ({event_date})\n"
-    file_text.append(event_title)
 
+    file_text.append(f"{LEVEL1} {event_name}\n")
     file_text.append(f"Local: {event_place}\n")
+    file_text.append(f"Horário: {event_date}\n")
 
     file_text.append(f"{LEVEL2} Palestras\n")
 
@@ -39,6 +41,7 @@ def markdown_generator(event):
 def read_json(edition):
     with open(f'temp/talks_{edition}.json', 'r') as talks_file:
         return json.load(talks_file)
+
 
 def write_readme(text, year_name, event_edition):
     os.chdir('../')
