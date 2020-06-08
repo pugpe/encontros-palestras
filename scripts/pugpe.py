@@ -1,6 +1,7 @@
 from click import argument, command
 from scrapy import Spider
 from scrapy.crawler import CrawlerProcess
+import roman
 
 import readme_generator
 
@@ -41,7 +42,8 @@ class PugSpider(Spider):
 @command()
 @argument('edition')
 def main(edition):
-    start_urls = [f"http://pycon.pug.pe/{edition.upper()}/"]
+    roman_edition = roman.toRoman(int(edition))
+    start_urls = [f"http://pycon.pug.pe/{roman_edition}/"]
     process = CrawlerProcess(
         settings={
             "FEEDS": {

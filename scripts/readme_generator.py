@@ -3,6 +3,7 @@ import json
 import re
 
 import dateparser
+import roman
 
 
 LEVEL1 = "#"
@@ -11,7 +12,7 @@ LEVEL3 = "###"
 LEVEL4 = "####"
 
 
-def markdown_generator(event):
+def markdown_generator(event, edition):
     file_text = []
     event_date = event["horario"]
     event_place = event["local"]
@@ -31,11 +32,7 @@ def markdown_generator(event):
     parsed_date = dateparser.parse(event_date)
     dir_name = str(parsed_date.year)
 
-    event_edition_m = re.search(r'^\d+', event_name)
-    if event_edition_m:
-        event_edition = event_edition_m.group()
-
-    write_readme('\n'.join(file_text), dir_name, event_edition)
+    write_readme('\n'.join(file_text), dir_name, edition)
 
 
 def read_json(edition):
@@ -56,4 +53,4 @@ def write_readme(text, year_name, event_edition):
 def main(edition):
     data = read_json(edition)
     for event in data:
-        markdown_generator(event)
+        markdown_generator(event, edition)
