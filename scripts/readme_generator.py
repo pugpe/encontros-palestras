@@ -1,9 +1,8 @@
 import os
 import json
-import re
+import pandas as pd
 
 import dateparser
-import roman
 
 
 LEVEL1 = "#"
@@ -50,7 +49,28 @@ def write_readme(text, year_name, event_edition):
         readme_file.writelines(text)
 
 
-def main(edition):
+def edition_readme(edition):
     data = read_json(edition)
     for event in data:
         markdown_generator(event, edition)
+
+
+def rank_readme():
+    df_talks = pd.read_csv("temp/talks_all.csv")
+    df_talks['autor'] = df_talks['autor'].map(normalize_name)
+    data_group = pd.pivot_table(
+        df_talks,
+        index=["autor"],
+        aggfunc={"titulo": len},
+        fill_value=0
+    )
+    data_group = data_group.sort_values('titulo', ascending=False)
+    data_group.to_csv('rank.csv', encoding='utf-8')
+
+
+def normalize_name(full_name):
+    if ',' not in full_name:
+        name = full_name.split()
+        return ' '.join([name[0], name[-1]])
+    else:
+        return full_name
