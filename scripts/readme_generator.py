@@ -65,7 +65,7 @@ def rank_readme():
         fill_value=0
     )
     data_group = data_group.sort_values('titulo', ascending=False)
-    data_group.to_csv('rank.csv', encoding='utf-8')
+    data_group.to_csv('rank.csv')
 
 
 def normalize_name(full_name):
