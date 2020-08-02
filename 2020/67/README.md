@@ -1,4 +1,4 @@
-# 66º Encontro do PUG-PE (20/06)
+# 67º Encontro do PUG-PE (20/06)
 
 Local: [Live no Youtube](https://www.youtube.com/watch?v=pDQsuN-mTTU)
 
