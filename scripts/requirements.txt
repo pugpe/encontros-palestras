@@ -14,7 +14,7 @@ importlib-metadata==1.6.1
 incremental==17.5.0
 isort==4.3.21
 lazy-object-proxy==1.4.3
-lxml==4.6.2
+lxml==4.9.1
 mccabe==0.6.1
 parsel==1.6.0
 Protego==0.1.16
